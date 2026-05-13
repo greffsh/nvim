@@ -114,10 +114,10 @@ return {
 					wrap = true,
 				})
 			end, { desc = "LSP: Hover" })
-			vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
-			vim.keymap.set("n", "<leader>gr", function()
-				require("telescope.builtin").lsp_references()
-			end, { desc = "LSP: Go to references" })
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
+			-- vim.keymap.set("n", "gr", function()
+			-- 	require("telescope.builtin").lsp_references()
+			-- end, { desc = "LSP: Go to references" })
 			vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, { desc = "LSP: Code actions" })
 		end,
 	},
