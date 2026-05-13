@@ -7,27 +7,17 @@ return {
 	config = function()
 		require("themery").setup({
 			themes = {
-				-- always add custom configs here so then can be loaded with the theme picker
-				"onedark_vivid",
-				"nightfox",
-				"everforest",
+				"gruvbox",
 				{
-					name ="gruvbox-light",
+					name = "gruvbox-light",
 					colorscheme = "gruvbox",
-					before = [[vim.o.background = "light"]]
-				},
-				"catppuccin-frappe",
-				"catppuccin-latte",
-				"catppuccin-mocha",
-				"catppuccin-macchiato",
-				"ayu",
-				"ayu-dark",
-				"kanagawa",
-				{
-					name = "solarized",
-					colorscheme = "solarized",
 					before = [[vim.o.background = "light"]],
 				},
+				"catppuccin-latte",
+				"catppuccin-frappe",
+				"catppuccin-macchiato",
+				"catppuccin-mocha",
+				"kanagawa",
 			},
 			livePreview = true,
 		})
