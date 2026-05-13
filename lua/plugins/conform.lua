@@ -19,13 +19,29 @@ return {
 	{
 		"stevearc/conform.nvim",
 		opts = function()
+			local prettier_markers = {
+				".prettierrc",
+				".prettierrc.json",
+				".prettierrc.yaml",
+				".prettierrc.yml",
+				".prettierrc.js",
+				".prettierrc.cjs",
+				".prettierrc.mjs",
+				".prettierrc.toml",
+				"prettier.config.js",
+				"prettier.config.cjs",
+				"prettier.config.mjs",
+			}
+
 			local function select_formatter(bufnr)
-				local cwd = vim.fn.getcwd()
-				if vim.fn.filereadable(cwd .. "/biome.json") == 1 then
+				local file = vim.api.nvim_buf_get_name(bufnr)
+				if vim.fs.root(file, { "biome.json", "biome.jsonc" }) then
 					return { "biome" }
-				else
+				end
+				if vim.fs.root(file, prettier_markers) then
 					return { "prettierd" }
 				end
+				return {}
 			end
 
 			return {
