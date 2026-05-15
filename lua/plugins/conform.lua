@@ -8,7 +8,6 @@ return {
 				"stylua",
 				"prettierd",
 				"biome",
-				"rustfmt",
 				"ruff",
 				"prettypst",
 			},
