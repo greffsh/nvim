@@ -1,28 +1,10 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
+	"romus204/tree-sitter-manager.nvim",
 	lazy = false,
-	build = ":TSUpdate",
 	config = function()
-		require("nvim-treesitter.configs").setup({
-			ensure_installed = {
-				"lua",
-				"typescript",
-				"javascript",
-				"tsx",
-				"html",
-				"css",
-				"json",
-				"markdown",
-				"markdown_inline",
-				"python",
-				"rust",
-				"typst",
-			},
+		require("tree-sitter-manager").setup({
 			auto_install = true,
-			sync_install = false,
-			highlight = { enable = true },
-			indent = { enable = true },
+			highlight = true,
 		})
 	end,
 }

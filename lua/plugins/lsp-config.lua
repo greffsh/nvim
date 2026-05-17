@@ -1,15 +1,50 @@
 return {
 	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
+		"mason-org/mason.nvim",
+		opts = {},
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
-		dependencies = { "williamboman/mason.nvim" },
+		"mason-org/mason-lspconfig.nvim",
+		dependencies = {
+			"mason-org/mason.nvim",
+			"neovim/nvim-lspconfig",
+			"hrsh7th/cmp-nvim-lsp",
+		},
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			vim.lsp.config("*", { capabilities = capabilities })
+
+			vim.lsp.config("lua_ls", {
+				settings = { Lua = { diagnostics = { globals = { "vim" } } } },
+			})
+			vim.lsp.config("vtsls", {
+				root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+			})
+			vim.lsp.config("biome", {
+				root_markers = { "biome.json", "biome.jsonc" },
+			})
+			vim.lsp.config("pyright", {
+				root_markers = { "pyproject.toml", "setup.py", "requirements.txt", "pyrightconfig.json" },
+			})
+			vim.lsp.config("rust_analyzer", {
+				root_markers = { "Cargo.toml" },
+			})
+			vim.lsp.config("tailwindcss", {
+				root_markers = {
+					"tailwind.config.js",
+					"tailwind.config.ts",
+					"tailwind.config.cjs",
+					"tailwind.config.mjs",
+				},
+			})
+
+			local emmet_capabilities = vim.deepcopy(capabilities)
+			emmet_capabilities.textDocument.completion.completionItem.snippetSupport = true
+			vim.lsp.config("emmet_ls", {
+				capabilities = emmet_capabilities,
+				filetypes = { "typescriptreact", "javascriptreact", "tsx", "jsx" },
+			})
 
 			require("mason-lspconfig").setup({
 				ensure_installed = {
@@ -26,77 +61,6 @@ return {
 					"biome",
 					"tinymist",
 				},
-				handlers = {
-					function(server_name)
-						vim.lsp.config(server_name, { capabilities = capabilities })
-						vim.lsp.enable(server_name)
-					end,
-
-					["lua_ls"] = function()
-						vim.lsp.config("lua_ls", {
-							capabilities = capabilities,
-							settings = {
-								Lua = { diagnostics = { globals = { "vim" } } },
-							},
-						})
-						vim.lsp.enable("lua_ls")
-					end,
-
-					["vtsls"] = function()
-						vim.lsp.config("vtsls", {
-							root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
-							capabilities = capabilities,
-						})
-						vim.lsp.enable("vtsls")
-					end,
-
-					["biome"] = function()
-						vim.lsp.config("biome", {
-							root_markers = { "biome.json", "biome.jsonc" },
-							capabilities = capabilities,
-						})
-						vim.lsp.enable("biome")
-					end,
-
-					["pyright"] = function()
-						vim.lsp.config("pyright", {
-							root_markers = { "pyproject.toml", "setup.py", "requirements.txt", "pyrightconfig.json" },
-							capabilities = capabilities,
-						})
-						vim.lsp.enable("pyright")
-					end,
-
-					["rust_analyzer"] = function()
-						vim.lsp.config("rust_analyzer", {
-							root_markers = { "Cargo.toml" },
-							capabilities = capabilities,
-						})
-						vim.lsp.enable("rust_analyzer")
-					end,
-
-					["tailwindcss"] = function()
-						vim.lsp.config("tailwindcss", {
-							root_markers = {
-								"tailwind.config.js",
-								"tailwind.config.ts",
-								"tailwind.config.cjs",
-								"tailwind.config.mjs",
-							},
-							capabilities = capabilities,
-						})
-						vim.lsp.enable("tailwindcss")
-					end,
-
-					["emmet_ls"] = function()
-						local emmet_capabilities = vim.deepcopy(capabilities)
-						emmet_capabilities.textDocument.completion.completionItem.snippetSupport = true
-						vim.lsp.config("emmet_ls", {
-							capabilities = emmet_capabilities,
-							filetypes = { "typescriptreact", "javascriptreact", "tsx", "jsx" },
-						})
-						vim.lsp.enable("emmet_ls")
-					end,
-				},
 			})
 		end,
 	},
@@ -104,6 +68,16 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = { "hrsh7th/cmp-nvim-lsp" },
 		config = function()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			vim.lsp.config("gleam", {
+				cmd = { "gleam", "lsp" },
+				filetypes = { "gleam" },
+				root_markers = { "gleam.toml", ".git" },
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("gleam")
+
 			vim.lsp.inlay_hint.enable(true)
 
 			vim.keymap.set("n", "K", function()
@@ -115,9 +89,6 @@ return {
 				})
 			end, { desc = "LSP: Hover" })
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
-			-- vim.keymap.set("n", "gr", function()
-			-- 	require("telescope.builtin").lsp_references()
-			-- end, { desc = "LSP: Go to references" })
 			vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, { desc = "LSP: Code actions" })
 		end,
 	},
