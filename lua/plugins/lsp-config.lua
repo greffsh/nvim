@@ -19,7 +19,7 @@ return {
 				settings = { Lua = { diagnostics = { globals = { "vim" } } } },
 			})
 			vim.lsp.config("vtsls", {
-				root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+				root_markers = { "tsconfig.json", "jsconfig.json", "package.json" },
 			})
 			vim.lsp.config("biome", {
 				root_markers = { "biome.json", "biome.jsonc" },
@@ -77,8 +77,6 @@ return {
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("gleam")
-
-			vim.lsp.inlay_hint.enable(true)
 
 			vim.keymap.set("n", "K", function()
 				vim.lsp.buf.hover({
