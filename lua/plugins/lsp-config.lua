@@ -31,6 +31,15 @@ return {
 				root_markers = { "Cargo.toml" },
 			})
 			vim.lsp.config("tailwindcss", {
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascriptreact",
+					"typescriptreact",
+					"svelte",
+					"vue",
+				},
 				root_markers = {
 					"tailwind.config.js",
 					"tailwind.config.ts",
