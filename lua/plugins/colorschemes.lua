@@ -5,4 +5,8 @@ return {
 		"rebelot/kanagawa.nvim",
 		opts = { background = { dark = "wave" } },
 	},
+	{
+		"oskarnurm/koda.nvim",
+		priority = 1000,
+	},
 }

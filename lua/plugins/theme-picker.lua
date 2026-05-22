@@ -18,6 +18,11 @@ return {
 				"catppuccin-macchiato",
 				"catppuccin-mocha",
 				"kanagawa",
+				{
+					name = "koda",
+					colorscheme = "koda",
+					before = [[vim.o.background = "dark"]],
+				},
 			},
 			livePreview = true,
 		})
