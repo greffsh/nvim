@@ -120,6 +120,15 @@ return {
 			end, { desc = "LSP: Hover" })
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
 			vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, { desc = "LSP: Code actions" })
+			vim.keymap.set({ "n", "v" }, "<leader>r", vim.lsp.buf.rename, { desc = "LSP: Rename symbol" })
+
+			vim.keymap.set(
+				{ "n", "v" },
+				"<leader>e",
+				vim.diagnostic.setloclist,
+				{ desc = "Show errors on current buffer" }
+			)
+			vim.keymap.set({ "n", "v" }, "<leader>E", vim.diagnostic.setqflist, { desc = "Show errors across project" })
 		end,
 	},
 }

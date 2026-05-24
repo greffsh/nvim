@@ -33,7 +33,6 @@ vim.keymap.set("n", "<C-w>k", function()
 	wrap_window("k", "j")
 end, { noremap = true, desc = "Move up or wrap to bottom" })
 
--- File-level back/forward navigation (replaces jumplist <C-o>/<C-i>)
 local file_history = {}
 local file_history_idx = 0
 local navigating = false
