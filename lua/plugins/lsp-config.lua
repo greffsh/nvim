@@ -96,7 +96,7 @@ return {
 			vim.lsp.config("gleam", {
 				cmd = { "gleam", "lsp" },
 				filetypes = { "gleam" },
-				root_markers = { "gleam.toml", ".git" },
+				root_markers = { "gleam.toml" },
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("gleam")
@@ -112,8 +112,8 @@ return {
 
 			vim.keymap.set("n", "K", function()
 				vim.lsp.buf.hover({
-					border = "rounded",
-					max_height = 80,
+					border = { "", "", "", " ", "", "", "", " " },
+					max_height = 30,
 					max_width = 80,
 					wrap = true,
 				})
