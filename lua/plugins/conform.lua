@@ -70,10 +70,12 @@ return {
 					python = { "ruff_format" },
 					rust = { "rustfmt" },
 					typst = { "prettypst" },
+					go = { "gofumpt" },
+					gleam = { "gleam" },
 				},
 				format_on_save = {
 					timeout_ms = 2000,
-					lsp_fallback = false,
+					lsp_fallback = "never",
 				},
 			}
 		end,
