@@ -72,6 +72,7 @@ return {
 					typst = { "prettypst" },
 					go = { "gofumpt" },
 					gleam = { "gleam" },
+					zig = { "zigfmt" },
 				},
 				format_on_save = {
 					timeout_ms = 2000,
