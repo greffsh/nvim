@@ -8,6 +8,7 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.keymap.set("n", "<leader>w", ":w!<CR>", { desc = "Force write" })
 vim.keymap.set("n", "<leader>q", ":q!<CR>", { desc = "Force quit" })
+vim.keymap.set("n", "<leader>R", ":checktime<CR>", { desc = "Reload buffer if changed on disk" })
 
 -- Window navigation with wrapping in all directions
 local function wrap_window(direction, opposite)
@@ -93,6 +94,50 @@ vim.keymap.set("n", "<A-i>", function()
 	end
 	navigating = false
 end, { noremap = true, desc = "Go to next visited file" })
+
+-- Floating notes window (toggle ~/todo.md)
+local notes_path = vim.fn.expand("~/todo.md")
+local notes_win = nil
+
+local function toggle_notes()
+	-- Already open? close it (write if modified)
+	if notes_win and vim.api.nvim_win_is_valid(notes_win) then
+		local buf = vim.api.nvim_win_get_buf(notes_win)
+		if vim.bo[buf].modified then
+			vim.api.nvim_buf_call(buf, function()
+				vim.cmd("silent write")
+			end)
+		end
+		vim.api.nvim_win_close(notes_win, true)
+		notes_win = nil
+		return
+	end
+
+	-- Find or create the buffer for the file
+	local buf = vim.fn.bufnr(notes_path, true)
+	if vim.api.nvim_buf_get_name(buf) == "" then
+		vim.api.nvim_buf_set_name(buf, notes_path)
+	end
+	vim.fn.bufload(buf)
+
+	local width = math.floor(vim.o.columns * 0.7)
+	local height = math.floor(vim.o.lines * 0.8)
+	notes_win = vim.api.nvim_open_win(buf, true, {
+		relative = "editor",
+		width = width,
+		height = height,
+		row = math.floor((vim.o.lines - height) / 2),
+		col = math.floor((vim.o.columns - width) / 2),
+		style = "minimal",
+		border = "rounded",
+		title = " todo.md ",
+		title_pos = "center",
+	})
+	-- q closes the float in this buffer only
+	vim.keymap.set("n", "q", toggle_notes, { buffer = buf, desc = "Close notes float" })
+end
+
+vim.keymap.set("n", "<leader>n", toggle_notes, { desc = "Toggle floating notes (~/todo.md)" })
 
 vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
