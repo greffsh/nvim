@@ -18,20 +18,6 @@ return {
 			vim.lsp.config("lua_ls", {
 				settings = { Lua = { diagnostics = { globals = { "vim" } } } },
 			})
-			local ts_inlay_hints = {
-				enumMemberValues = { enabled = true },
-				functionLikeReturnTypes = { enabled = true },
-				parameterNames = { enabled = "literals", suppressWhenArgumentMatchesName = true },
-				parameterTypes = { enabled = false },
-				propertyDeclarationTypes = { enabled = false },
-				variableTypes = { enabled = false },
-			}
-			vim.lsp.config("vtsls", {
-				settings = {
-					typescript = { inlayHints = ts_inlay_hints },
-					javascript = { inlayHints = ts_inlay_hints },
-				},
-			})
 			vim.lsp.config("pyright", {
 				root_markers = { "pyproject.toml", "setup.py", "requirements.txt", "pyrightconfig.json" },
 			})
@@ -44,6 +30,7 @@ return {
 					"typescriptreact",
 					"svelte",
 					"vue",
+					"astro",
 				},
 				root_dir = function(bufnr, on_dir)
 					local fname = vim.api.nvim_buf_get_name(bufnr)
@@ -101,19 +88,10 @@ return {
 			})
 			vim.lsp.enable("gleam")
 
-			vim.api.nvim_create_autocmd("LspAttach", {
-				callback = function(args)
-					local client = vim.lsp.get_client_by_id(args.data.client_id)
-					if client and client:supports_method("textDocument/inlayHint") then
-						vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
-					end
-				end,
-			})
-
 			vim.keymap.set("n", "K", function()
 				vim.lsp.buf.hover({
 					border = { "", "", "", " ", "", "", "", " " },
-					max_height = 30,
+					-- max_height = 30,
 					max_width = 80,
 					wrap = true,
 				})
