@@ -4,7 +4,10 @@ vim.cmd("set softtabstop=2")
 vim.cmd("set shiftwidth=2")
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
-vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard = ""
+
+vim.keymap.set({ "n", "x" }, "y", '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set({ "n", "x" }, "Y", '"+Y', { desc = "Yank line to system clipboard" })
 
 vim.keymap.set("n", "<leader>w", ":w!<CR>", { desc = "Force write" })
 vim.keymap.set("n", "<leader>q", ":q!<CR>", { desc = "Force quit" })
