@@ -7,17 +7,41 @@ return {
 	config = function()
 		require("themery").setup({
 			themes = {
-				"gruvbox",
+				{
+					name = "gruvbox",
+					colorscheme = "gruvbox",
+					before = [[vim.o.background = "dark"]],
+				},
 				{
 					name = "gruvbox-light",
 					colorscheme = "gruvbox",
 					before = [[vim.o.background = "light"]],
 				},
-				"catppuccin-latte",
-				"catppuccin-frappe",
-				"catppuccin-macchiato",
-				"catppuccin-mocha",
-				"kanagawa",
+				{
+					name = "catppuccin-latte",
+					colorscheme = "catppuccin-latte",
+					before = [[vim.o.background = "light"]],
+				},
+				{
+					name = "catppuccin-frappe",
+					colorscheme = "catppuccin-frappe",
+					before = [[vim.o.background = "dark"]],
+				},
+				{
+					name = "catppuccin-macchiato",
+					colorscheme = "catppuccin-macchiato",
+					before = [[vim.o.background = "dark"]],
+				},
+				{
+					name = "catppuccin-mocha",
+					colorscheme = "catppuccin-mocha",
+					before = [[vim.o.background = "dark"]],
+				},
+				{
+					name = "kanagawa",
+					colorscheme = "kanagawa",
+					before = [[vim.o.background = "dark"]],
+				},
 				{
 					name = "koda",
 					colorscheme = "koda",
