@@ -10,7 +10,40 @@ vim.keymap.set({ "n", "x" }, "y", '"+y', { desc = "Yank to system clipboard" })
 vim.keymap.set({ "n", "x" }, "Y", '"+Y', { desc = "Yank line to system clipboard" })
 
 vim.keymap.set("n", "<leader>w", ":w!<CR>", { desc = "Force write" })
-vim.keymap.set("n", "<leader>q", ":q!<CR>", { desc = "Force quit" })
+
+local function force_quit()
+	if vim.bo.filetype == "lean" then
+		pcall(function()
+			require("lean.infoview").close()
+		end)
+		vim.cmd("q!")
+		return
+	end
+
+	if vim.bo.filetype == "leaninfo" then
+		local ok, infoview = pcall(require, "lean.infoview")
+		local source_win = nil
+
+		if ok then
+			local current_infoview = infoview.get_current_infoview()
+			source_win = current_infoview and current_infoview.last_window and current_infoview.last_window.id
+			pcall(infoview.close)
+		else
+			vim.cmd("q!")
+			return
+		end
+
+		if source_win and vim.api.nvim_win_is_valid(source_win) then
+			vim.api.nvim_set_current_win(source_win)
+			vim.cmd("q!")
+		end
+		return
+	end
+
+	vim.cmd("q!")
+end
+
+vim.keymap.set("n", "<leader>q", force_quit, { desc = "Force quit" })
 vim.keymap.set("n", "<leader>R", ":checktime<CR>", { desc = "Reload buffer if changed on disk" })
 
 -- Window navigation with wrapping in all directions
