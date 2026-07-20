@@ -88,6 +88,8 @@ return {
 			})
 			vim.lsp.enable("gleam")
 
+			vim.lsp.enable("racket_langserver")
+
 			vim.keymap.set("n", "K", function()
 				vim.lsp.buf.hover({
 					border = { "", "", "", " ", "", "", "", " " },

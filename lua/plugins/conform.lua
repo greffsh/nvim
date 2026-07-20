@@ -74,10 +74,12 @@ return {
 					gleam = { "gleam" },
 					zig = { "zigfmt" },
 				},
-				format_on_save = {
-					timeout_ms = 2000,
-					lsp_fallback = "never",
-				},
+				format_on_save = function(bufnr)
+					return {
+						timeout_ms = 2000,
+						lsp_format = vim.bo[bufnr].filetype == "racket" and "prefer" or "never",
+					}
+				end,
 			}
 		end,
 	},
