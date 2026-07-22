@@ -47,6 +47,16 @@ return {
 					colorscheme = "koda",
 					before = [[vim.o.background = "dark"]],
 				},
+				{
+					name = "bonatto dark",
+					colorscheme = "atomonedark_matte",
+					before = [[vim.o.background = "dark"]],
+				},
+				{
+					name = "bonatto light",
+					colorscheme = "atomonelight_matte",
+					before = [[vim.o.background = "light"]],
+				},
 			},
 			livePreview = true,
 		})

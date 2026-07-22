@@ -9,4 +9,7 @@ return {
 		"oskarnurm/koda.nvim",
 		priority = 1000,
 	},
+	{
+		"SergioBonatto/One-Half-Matte",
+	},
 }
