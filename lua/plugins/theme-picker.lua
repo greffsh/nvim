@@ -57,6 +57,16 @@ return {
 					colorscheme = "atomonelight_matte",
 					before = [[vim.o.background = "light"]],
 				},
+				{
+					name = "one half light",
+					colorscheme = "onehalflight",
+					before = [[vim.o.background = "light"]],
+				},
+				{
+					name = "one half dark",
+					colorscheme = "onehalfdark",
+					before = [[vim.o.background = "dark"]],
+				},
 			},
 			livePreview = true,
 		})
