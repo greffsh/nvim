@@ -17,9 +17,6 @@ return {
 			require("luasnip.loaders.from_vscode").lazy_load()
 
 			cmp.setup({
-				enabled = function()
-					return not vim.tbl_contains({ "markdown", "markdown.mdx" }, vim.bo.filetype)
-				end,
 				snippet = {
 					expand = function(args)
 						require("luasnip").lsp_expand(args.body)
