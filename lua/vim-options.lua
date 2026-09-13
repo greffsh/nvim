@@ -223,7 +223,19 @@ end
 vim.keymap.set("n", "<leader>n", toggle_notes, { desc = "Toggle floating notes (~/todo.md)" })
 
 vim.keymap.set("n", "<leader>yl", function()
-	local location = string.format("%s:L%d:C%d", vim.fn.expand("%:p"), vim.fn.line("."), vim.fn.col("."))
+	local file_path = vim.api.nvim_buf_get_name(0)
+	if file_path == "" then
+		vim.notify("Current buffer has no file path", vim.log.levels.WARN)
+		return
+	end
+
+	local git_root = vim.fs.root(file_path, ".git")
+	local display_path = file_path
+	if git_root then
+		display_path = vim.fs.basename(git_root) .. "/" .. vim.fs.relpath(git_root, file_path)
+	end
+
+	local location = string.format("%s:L%d:C%d", display_path, vim.fn.line("."), vim.fn.col("."))
 
 	vim.fn.setreg("+", location)
 	vim.notify("Copied: " .. location)
