@@ -46,6 +46,53 @@ end
 vim.keymap.set("n", "<leader>q", force_quit, { desc = "Force quit" })
 vim.keymap.set("n", "<leader>R", ":checktime<CR>", { desc = "Reload buffer if changed on disk" })
 
+local function mark_quickfix_file_reviewed()
+	local current_buf = vim.api.nvim_get_current_buf()
+	local current_path = vim.api.nvim_buf_get_name(current_buf)
+	local qflist = vim.fn.getqflist({ idx = 0, items = 0, title = 0 })
+	local remaining = {}
+	local next_idx
+	local removed = 0
+
+	for original_idx, item in ipairs(qflist.items) do
+		local item_path = item.bufnr > 0 and vim.api.nvim_buf_get_name(item.bufnr) or ""
+		local is_current = item.bufnr == current_buf or (current_path ~= "" and item_path == current_path)
+
+		if is_current then
+			removed = removed + 1
+		else
+			table.insert(remaining, item)
+			if not next_idx and original_idx > qflist.idx then
+				next_idx = #remaining
+			end
+		end
+	end
+
+	if removed == 0 then
+		vim.notify("Current file is not in the quickfix list", vim.log.levels.INFO)
+		return
+	end
+
+	if #remaining == 0 then
+		vim.fn.setqflist({}, "r", { title = qflist.title, items = {} })
+		vim.cmd.cclose()
+		vim.notify("Quickfix review complete", vim.log.levels.INFO)
+		return
+	end
+
+	next_idx = next_idx or 1
+	vim.fn.setqflist({}, "r", {
+		title = qflist.title,
+		items = remaining,
+		idx = next_idx,
+	})
+	vim.cmd("cc " .. next_idx)
+end
+
+vim.keymap.set("n", "<leader>gr", mark_quickfix_file_reviewed, {
+	desc = "Mark current file reviewed",
+})
+
 -- Window navigation with wrapping in all directions
 local function wrap_window(direction, opposite)
 	local current_win = vim.api.nvim_get_current_win()
@@ -174,6 +221,13 @@ local function toggle_notes()
 end
 
 vim.keymap.set("n", "<leader>n", toggle_notes, { desc = "Toggle floating notes (~/todo.md)" })
+
+vim.keymap.set("n", "<leader>yl", function()
+	local location = string.format("%s:L%d:C%d", vim.fn.expand("%:p"), vim.fn.line("."), vim.fn.col("."))
+
+	vim.fn.setreg("+", location)
+	vim.notify("Copied: " .. location)
+end, { desc = "Yank cursor location" })
 
 vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
