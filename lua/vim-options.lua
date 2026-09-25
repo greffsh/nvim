@@ -11,12 +11,20 @@ vim.keymap.set({ "n", "x" }, "Y", '"+Y', { desc = "Yank line to system clipboard
 
 vim.keymap.set("n", "<leader>w", ":w!<CR>", { desc = "Force write" })
 
+local function quit_window_forcefully()
+	local ok, err = pcall(vim.cmd, "q!")
+
+	if not ok and not tostring(err):match("E37:") then
+		error(err, 0)
+	end
+end
+
 local function force_quit()
 	if vim.bo.filetype == "lean" then
 		pcall(function()
 			require("lean.infoview").close()
 		end)
-		vim.cmd("q!")
+		quit_window_forcefully()
 		return
 	end
 
@@ -29,18 +37,18 @@ local function force_quit()
 			source_win = current_infoview and current_infoview.last_window and current_infoview.last_window.id
 			pcall(infoview.close)
 		else
-			vim.cmd("q!")
+			quit_window_forcefully()
 			return
 		end
 
 		if source_win and vim.api.nvim_win_is_valid(source_win) then
 			vim.api.nvim_set_current_win(source_win)
-			vim.cmd("q!")
+			quit_window_forcefully()
 		end
 		return
 	end
 
-	vim.cmd("q!")
+	quit_window_forcefully()
 end
 
 vim.keymap.set("n", "<leader>q", force_quit, { desc = "Force quit" })
