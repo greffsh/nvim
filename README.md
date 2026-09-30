@@ -27,7 +27,7 @@ Language support included: TypeScript/JavaScript (with Tailwind, HTML, CSS, JSON
 10. [ripgrep](https://github.com/BurntSushi/ripgrep) — used by Telescope for `live_grep`
 11. [lazygit](https://github.com/jesseduffield/lazygit) — git TUI integration
 
-For JS/TS projects, if a `biome.json` is present, Biome will be used for formatting; otherwise, Prettier (`prettierd`) will be used as the fallback.
+Formatting runs on save through Conform (including `<leader>w`, which only saves the buffer). For JavaScript/TypeScript, JSX/TSX, HTML, and CSS, Biome is selected when a `biome.json` or `biome.jsonc` exists in the file's project ancestry. Otherwise, `prettierd` is selected only when a recognized Prettier config file is found; if neither kind of config exists, no formatter runs. Other filetypes use the formatter mappings in `lua/plugins/conform.lua`.
 
 ## Neovim version
 
