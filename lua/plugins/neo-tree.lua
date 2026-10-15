@@ -1,26 +1,26 @@
 return {
-	"nvim-neo-tree/neo-tree.nvim",
-	branch = "v3.x",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons",
-		"MunifTanjim/nui.nvim",
-	},
-
-	config = function()
-		vim.opt_local.relativenumber = true
-		require("neo-tree").setup({
-			window = {
-				position = "right",
-			},
-			filesystem = {
-				follow_current_file = {
-					enabled = true,
-				},
-				use_libuv_file_watcher = true,
-			},
-		})
-		vim.keymap.set("n", "<C-n>", ":Neotree filesystem reveal right<CR>", { desc = "Open Neotree" })
-		vim.keymap.set("n", "<C-j>", ":Neotree close<CR>", { desc = "Close Neotree" })
-	end,
+	-- "nvim-neo-tree/neo-tree.nvim",
+	-- branch = "v3.x",
+	-- dependencies = {
+	-- 	"nvim-lua/plenary.nvim",
+	-- 	"nvim-tree/nvim-web-devicons",
+	-- 	"MunifTanjim/nui.nvim",
+	-- },
+	--
+	-- config = function()
+	-- 	vim.opt_local.relativenumber = true
+	-- 	require("neo-tree").setup({
+	-- 		window = {
+	-- 			position = "right",
+	-- 		},
+	-- 		filesystem = {
+	-- 			follow_current_file = {
+	-- 				enabled = true,
+	-- 			},
+	-- 			use_libuv_file_watcher = true,
+	-- 		},
+	-- 	})
+	-- 	vim.keymap.set("n", "<C-n>", ":Neotree filesystem reveal right<CR>", { desc = "Open Neotree" })
+	-- 	vim.keymap.set("n", "<C-j>", ":Neotree close<CR>", { desc = "Close Neotree" })
+	-- end,
 }

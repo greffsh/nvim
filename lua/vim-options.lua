@@ -101,6 +101,59 @@ vim.keymap.set("n", "<leader>gr", mark_quickfix_file_reviewed, {
 	desc = "Mark current file reviewed",
 })
 
+local function remove_current_quickfix_entry()
+	local win = vim.api.nvim_get_current_win()
+	local wininfo = vim.fn.getwininfo(win)[1]
+	if not wininfo or wininfo.quickfix ~= 1 or wininfo.loclist == 1 then
+		return
+	end
+
+	local qflist = vim.fn.getqflist({ idx = 0, items = 0, title = 0, context = 0, id = 0 })
+	local entry_idx = vim.api.nvim_win_get_cursor(win)[1]
+	if entry_idx < 1 or entry_idx > #qflist.items then
+		return
+	end
+
+	local remaining = {}
+	for i, item in ipairs(qflist.items) do
+		if i ~= entry_idx then
+			table.insert(remaining, item)
+		end
+	end
+
+	local updated_list = {
+		id = qflist.id,
+		title = qflist.title,
+		context = qflist.context,
+		items = remaining,
+	}
+
+	if #remaining == 0 then
+		vim.fn.setqflist({}, "r", updated_list)
+		vim.cmd.cclose()
+		vim.notify("Quickfix review complete", vim.log.levels.INFO)
+		return
+	end
+
+	local next_idx = math.min(entry_idx, #remaining)
+	updated_list.idx = next_idx
+	vim.fn.setqflist({}, "r", updated_list)
+
+	if vim.api.nvim_win_is_valid(win) then
+		vim.api.nvim_win_set_cursor(win, { next_idx, 0 })
+	end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function(ev)
+		vim.keymap.set("n", "dd", remove_current_quickfix_entry, {
+			buffer = ev.buf,
+			desc = "Remove quickfix entry (keep file)",
+		})
+	end,
+})
+
 -- Window navigation with wrapping in all directions
 local function wrap_window(direction, opposite)
 	local current_win = vim.api.nvim_get_current_win()
